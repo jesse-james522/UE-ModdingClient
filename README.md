@@ -4,3 +4,5 @@ Download the latest release, extract it, keep the file structure as is, hit the 
 
 Note: if you want to rename a mod go into ModClientTheIsle\Mods and find the folder for the mod you want to rename.
 For exampel "Tyrannosaurus Improved" in the mod client will also be named that in the mods folder, so simply rename it and it should be smooth sailing
+
+Written in python
