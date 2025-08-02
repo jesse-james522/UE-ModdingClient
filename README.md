@@ -1,4 +1,4 @@
-Download the latest release, extract it, keep the file structure as is, hit the download latest release and then select the mod before launching
+Download the latest release, extract it, keep the file structure as is, hit the download latest release, refresh the mod list and then select the mod before launching
 
 !! you dont need to touch the isle in steam just make sure steam is running !!
 
