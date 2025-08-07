@@ -14,3 +14,5 @@ How to use: Double-click `The Isle Mod Client.exe` (auto-detects your The Isle f
 EAC Bypass: This tool disables EasyAntiCheat by patching settings.json. **Only use on private/modded servers.** Trying to join official or EAC servers will not work and get you kicked on join. Only install mods from trusted sources. If something goes wrong or restoring vanilla fails, use the reset buttons or verify your game files in Steam.
 
 Troubleshooting: If your mod doesn’t show up, check that it’s in the correct `Mods/<ModSet>/` folder. If the game doesn’t work right, use “Reset to Vanilla” or verify files in Steam.
+
+Discord: https://discord.gg/WxJc2NTVjC
