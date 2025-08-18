@@ -15,18 +15,26 @@ EAC Bypass: This tool disables EasyAntiCheat by patching settings.json. **Only u
 
 Troubleshooting: If your mod doesn’t show up, check that it’s in the correct `Mods/<ModSet>/` folder. If the game doesn’t work right, use “Reset to Vanilla” or verify files in Steam.
 
-How to build from source: 
 
-Requierments:
+
+
+# How to build from source:
+
+# Requierments:
 Download modclient.py
 Have windows 10/11
 Phyton 3.10+
 pyinstaller installed with this command if you have Phyton 3.10+ in cmd: pip install psutil pyinstaller
 
-Building:
+
+
+# Building:
 Run command py -m PyInstaller --onefile --noconsole "ModClient.py" in cmd in the file location of your mod file or add the entire location of the ModClient.py file 
 
-File structure(CAN BE FOUND IN THE GITHUB OR THE RELEASES):
+
+
+
+# File structure(CAN BE FOUND IN THE GITHUB OR THE RELEASES):
 Create these folders beside your built EXE. These are required for the client’s install/restore flow:
 
 Defaults/settings.json
@@ -63,4 +71,4 @@ Mods/sig.lua
 Mods/TestMod/ with .pak/.ucas/.utoc files inside(can be auto installed via a button click from the preset github URL if you dont change that in the source)
 
 
-Discord: https://discord.gg/WxJc2NTVjC
+# Discord: https://discord.gg/WxJc2NTVjC
