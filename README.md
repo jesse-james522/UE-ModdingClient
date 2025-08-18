@@ -15,4 +15,31 @@ EAC Bypass: This tool disables EasyAntiCheat by patching settings.json. **Only u
 
 Troubleshooting: If your mod doesn’t show up, check that it’s in the correct `Mods/<ModSet>/` folder. If the game doesn’t work right, use “Reset to Vanilla” or verify files in Steam.
 
+How to build from source: 
+
+Requierments:
+Download modclient.py
+Have windows 10/11
+Phyton 3.10+
+pyinstaller installed with this command if you have Phyton 3.10+ in cmd: pip install psutil pyinstaller
+
+Building:
+Run command py -m PyInstaller --onefile --noconsole "ModClient.py" in cmd in the file location of your mod file or add the entire location of the ModClient.py file 
+
+File structure(CAN BE FOUND IN THE GITHUB OR THE RELEASES):
+<your folder with the exe>/
+  The Isle Mod Client.exe           # or modclient.exe from /dist
+  Mods/
+    settings.json                   # MODDED settings.json (used on launch)
+    dsound.dll                      # copied to Binaries/Win64 at launch (if present)
+    sig.lua                         # copied to Binaries/Win64/Bitfix at launch (if present)
+    <YourModSetName>/
+      *.pak                         # iostore or legacy files
+      *.ucas
+      *.utoc
+      ... (any per-mod files)
+  Defaults/
+    settings.json                   # VANILLA settings.json (backup used to restore)
+
+
 Discord: https://discord.gg/WxJc2NTVjC
