@@ -27,19 +27,40 @@ Building:
 Run command py -m PyInstaller --onefile --noconsole "ModClient.py" in cmd in the file location of your mod file or add the entire location of the ModClient.py file 
 
 File structure(CAN BE FOUND IN THE GITHUB OR THE RELEASES):
-<your folder with the exe>/
-  The Isle Mod Client.exe           # or modclient.exe from /dist
-  Mods/
-    settings.json                   # MODDED settings.json (used on launch)
-    dsound.dll                      # copied to Binaries/Win64 at launch (if present)
-    sig.lua                         # copied to Binaries/Win64/Bitfix at launch (if present)
-    <YourModSetName>/
-      *.pak                         # iostore or legacy files
-      *.ucas
-      *.utoc
-      ... (any per-mod files)
-  Defaults/
-    settings.json                   # VANILLA settings.json (backup used to restore)
+Create these folders beside your built EXE. These are required for the client’s install/restore flow:
+
+Defaults/settings.json
+Your vanilla (original) The Isle settings.json.
+The client copies this back when you reset to vanilla or when the game closes.
+
+Mods/settings.json
+Your modded settings.json.
+The client copies this into The Isle/EasyAntiCheat/Settings.json on launch.
+
+Mods/dsound.dll (optional)
+Copied to The Isle/TheIsle/Binaries/Win64/dsound.dll on launch, removed on reset.
+
+Mods/sig.lua (optional)
+Copied to The Isle/TheIsle/Binaries/Win64/Bitfix/sig.lua on launch, removed on reset.
+
+Mods/<YourModSetName>/
+Put your per-mod game files here, such as .pak, .ucas, .utoc.
+The client copies/renames them into .../Content/Paks as needed (e.g., mymod_P.pak, etc.).
+Select this mod set in the launcher before starting the game.
+
+Example layout (shown as lines, not a collapsible block):
+
+The Isle Mod Client.exe
+
+Defaults/settings.json
+
+Mods/settings.json
+
+Mods/dsound.dll 
+
+Mods/sig.lua 
+
+Mods/TestMod/ with .pak/.ucas/.utoc files inside(can be auto installed via a button click from the preset github URL if you dont change that in the source)
 
 
 Discord: https://discord.gg/WxJc2NTVjC
