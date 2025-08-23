@@ -2,6 +2,9 @@
 
 A Windows mod manager and launcher for the dinosaur survival game The Isle (Steam).
 
+Bitfix: https://github.com/trumank/bitfix 
+sig.lua: https://gist.github.com/Buckminsterfullerene02/90077ce81c0fd908144498869f4ea288
+
 Features:
 - Auto-detects your The Isle installation in Steam
 - Lets you select and use any mod set for The Isle
