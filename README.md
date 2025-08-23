@@ -25,14 +25,17 @@ Troubleshooting: If your mod doesn’t show up, check that it’s in the correct
 
 # Requierments:
 Download modclient.py
+
 Have windows 10/11
+
 Phyton 3.10+
+
 pyinstaller installed with this command if you have Phyton 3.10+ in cmd: pip install psutil pyinstaller
 
 
 
 # Building:
-Run command py -m PyInstaller --onefile --noconsole "ModClient.py" in cmd in the file location of your mod file or add the entire location of the ModClient.py file 
+Run command "py -m PyInstaller --onefile --noconsole "ModClient.py"" in cmd in the file location of your mod file or add the entire location of the ModClient.py file 
 
 
 
