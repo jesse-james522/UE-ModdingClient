@@ -4,6 +4,7 @@ A Windows mod manager and launcher for the dinosaur survival game The Isle (Stea
 
 Bitfix: https://github.com/trumank/bitfix 
 sig.lua: https://gist.github.com/Buckminsterfullerene02/90077ce81c0fd908144498869f4ea288
+UE4SS: https://github.com/UE4SS-RE/RE-UE4SS
 
 Features:
 - Auto-detects your The Isle installation in Steam
@@ -11,6 +12,8 @@ Features:
 - Easy mod install from ZIP or GitHub link
 - Automatic backup and restoration of your original settings.json
 - Reset to vanilla or fully wipe all modded files with a button
+- Allows you to load with UE4SS easier 
+- Load without any custom features but no EAC 
 
 How to use: Double-click `The Isle Mod Client.exe` (auto-detects your The Isle folder, or use “Browse…” to select it). To install mods, paste a ZIP/GitHub link and click “Install most up to date mod files” or add your own mod files to a folder inside `Mods/`. Pick your mod set, then click “Install & Launch” to start The Isle with your mods (optionally minimize the launcher on start). To remove mods, use “Reset to Vanilla (settings only)” to restore original settings or “Full Wipe Modded Files (CAREFUL!)” to delete all mods.
 

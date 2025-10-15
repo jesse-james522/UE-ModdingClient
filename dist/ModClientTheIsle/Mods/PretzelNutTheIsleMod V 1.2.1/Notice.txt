@@ -1,0 +1,19 @@
+Mod files created by pretzel3819 on discord
+
+Previous but active changes
+-scaled rex
+-nerfed crush dmg to 1000
+-nerfed the dmg-stam ratio to 75-10 instead of 100-10 but increased the reate of attack a lot(does less dmg but you finish a pin much faster)
+-rebalanced allo to 2.8 tons. 38.7 km/h and 225 bite force
+-buffed ptera stam regen to 150 seconds base resting instead of 250 seconds
+-buffed ptera to 65 kg
+-nerfed carno bite to 100
+-buffed carno alt bite to 225
+-buffed ram knockdown to 225
+-dibble 1500 kgs
+-dibble basically 40 km/h
+-upped its attacks a little
+-set pachy speed to 42.5 km/h
+
+New changes:
+-lowered dibbles dmg a little 
