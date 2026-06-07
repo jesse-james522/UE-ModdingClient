@@ -1,0 +1,97 @@
+<Window x:Class="OrionLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:OrionLauncher.Views"
+        Title="Orion Mod Launcher"
+        Height="700" Width="900"
+        MinHeight="500" MinWidth="620"
+        Background="#121212"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" Background="#121212" BorderBrush="#333" Foreground="#CCC">
+            <TabItem Header="Mod">
+                <views:ModsView DataContext="{Binding ModInfoVm}" Margin="4"/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <views:SettingsView DataContext="{Binding SettingsVm}" Margin="4"/>
+            </TabItem>
+        </TabControl>
+
+        <!-- Bottom action bar -->
+        <Border Grid.Row="1" Background="#1A1A1A" BorderBrush="#333" BorderThickness="0,1,0,0" Padding="10,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Inject -->
+                <Button Grid.Column="0"
+                        Content="⬇  Inject"
+                        Command="{Binding InjectCommand}"
+                        Width="120" Height="38"
+                        FontSize="13" FontWeight="SemiBold"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        ToolTip="Download update if needed, deploy mod files, disable EAC, copy bypass shims"/>
+
+                <!-- Launch Game -->
+                <Button Grid.Column="2"
+                        Content="▶  Launch Game"
+                        Command="{Binding LaunchGameCommand}"
+                        Width="138" Height="38"
+                        FontSize="13" FontWeight="SemiBold"
+                        Style="{StaticResource ActionButtonStyle}"
+                        ToolTip="Start The Isle"/>
+
+                <!-- Auto-launch checkbox -->
+                <CheckBox Grid.Column="4"
+                          Content="Launch after inject"
+                          IsChecked="{Binding AutoLaunch}"
+                          Foreground="#AAA" FontSize="12"
+                          VerticalAlignment="Center"
+                          ToolTip="Automatically launch the game immediately after injecting"/>
+
+                <!-- Status text -->
+                <TextBlock Grid.Column="5"
+                           Text="{Binding StatusText}"
+                           VerticalAlignment="Center"
+                           Margin="14,0,0,0"
+                           Foreground="#888" FontSize="12"
+                           TextTrimming="CharacterEllipsis"/>
+
+                <!-- Vertical separator before Remove -->
+                <Border Grid.Column="6" Background="#333" Width="1" Margin="0,4"/>
+
+                <!-- Remove -->
+                <Button Grid.Column="8"
+                        Content="✕  Remove"
+                        Command="{Binding RemoveCommand}"
+                        Width="110" Height="38"
+                        FontSize="13" FontWeight="SemiBold"
+                        Style="{StaticResource DangerButtonStyle}"
+                        ToolTip="Restore EAC, remove shims, and remove mod files from the game"/>
+
+                <!-- Game dir warning -->
+                <TextBlock Grid.Column="9"
+                           Text="⚠  Game path not set"
+                           Foreground="#E8A020" VerticalAlignment="Center"
+                           Margin="12,0,0,0" FontSize="11"
+                           Visibility="{Binding GameDirValid, Converter={StaticResource InverseBoolToVisibility}}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

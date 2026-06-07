@@ -1,0 +1,189 @@
+<Window x:Class="OrionLauncher.Views.ModPackagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Orion — Mod Packager"
+        Width="720" Height="620"
+        MinWidth="600" MinHeight="500"
+        Background="#121212"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/Dark.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+            <TextBlock Text="Mod Packager" FontSize="18" FontWeight="Bold" Foreground="#EEE"/>
+            <TextBlock Foreground="#666" FontSize="11" Margin="0,2,0,0"
+                       Text="Bundle one or more PAK triplets into a named mod entry. Install directly or export as a ZIP."/>
+        </StackPanel>
+
+        <!-- Mod metadata -->
+        <Grid Grid.Row="1" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="110"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="MOD NAME *" Style="{StaticResource SectionHeaderStyle}" Margin="0,0,0,2"/>
+            <TextBlock Grid.Column="2" Grid.Row="0" Text="AUTHOR" Style="{StaticResource SectionHeaderStyle}" Margin="0,0,0,2"/>
+            <TextBlock Grid.Column="4" Grid.Row="0" Text="VERSION" Style="{StaticResource SectionHeaderStyle}" Margin="0,0,0,2"/>
+
+            <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputStyle}"/>
+            <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputStyle}"/>
+            <TextBox Grid.Column="4" Grid.Row="2" Text="{Binding Version, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputStyle}"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,10">
+            <TextBlock Text="SHORT DESCRIPTION" Style="{StaticResource SectionHeaderStyle}" Margin="0,0,0,2"/>
+            <TextBox Text="{Binding ShortDescription, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputStyle}"/>
+        </StackPanel>
+
+        <!-- File list area -->
+        <Grid Grid.Row="3" Margin="0,0,0,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- File list header bar -->
+            <Border Grid.Row="0" Background="#181818" BorderBrush="#333" BorderThickness="1,1,1,0"
+                    CornerRadius="4,4,0,0" Padding="8,6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="PAK GROUPS — drag &amp; drop files here or use Add Files"
+                               Foreground="#666" FontSize="11" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Content="+ Add Files..."
+                            Command="{Binding AddFilesCommand}"
+                            Padding="10,3" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Grid.Column="3" Content="Clear All"
+                            Command="{Binding ClearAllCommand}"
+                            Padding="10,3" Style="{StaticResource DangerButtonStyle}"/>
+                </Grid>
+            </Border>
+
+            <!-- Drop target + file list -->
+            <Border Grid.Row="1" x:Name="DropBorder"
+                    Background="#161616" BorderBrush="#333" BorderThickness="1,0,1,0"
+                    AllowDrop="True"
+                    Drop="OnDrop" DragOver="OnDragOver">
+                <Grid>
+                    <!-- Empty state hint -->
+                    <TextBlock Text="Drop .pak / .ucas / .utoc files here"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="#333" FontSize="15"
+                               Visibility="{Binding Groups.Count, Converter={StaticResource ZeroToVisibility}}"/>
+
+                    <ItemsControl ItemsSource="{Binding Groups}" Margin="0,2">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="4,2" Padding="8,6"
+                                        Background="#1E1E1E" BorderBrush="#2A2A2A" BorderThickness="1" CornerRadius="3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="30"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Base name -->
+                                        <TextBlock Grid.Column="0" Text="{Binding BaseName}"
+                                                   Foreground="#EEE" FontFamily="Consolas" FontSize="12"
+                                                   VerticalAlignment="Center"/>
+
+                                        <!-- Extensions present -->
+                                        <TextBlock Grid.Column="1" Text="{Binding FileSummary}"
+                                                   Foreground="#6CF06C" FontSize="11"
+                                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                                        <!-- Size -->
+                                        <TextBlock Grid.Column="2" Text="{Binding SizeSummary}"
+                                                   Foreground="#888" FontSize="11"
+                                                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                                                   Margin="0,0,8,0"/>
+
+                                        <!-- Remove group -->
+                                        <Button Grid.Column="3" Content="×"
+                                                Command="{Binding DataContext.RemoveGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}"
+                                                Width="22" Height="22"
+                                                FontSize="13" Padding="0"
+                                                Style="{StaticResource DangerButtonStyle}"
+                                                VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
+
+            <!-- Total summary -->
+            <Border Grid.Row="2" Background="#181818" BorderBrush="#333" BorderThickness="1,0,1,1"
+                    CornerRadius="0,0,4,4" Padding="8,5">
+                <TextBlock Text="{Binding TotalSummary}" Foreground="#666" FontSize="11"/>
+            </Border>
+        </Grid>
+
+        <!-- Full description -->
+        <StackPanel Grid.Row="4" Margin="0,0,0,12">
+            <TextBlock Text="FULL DESCRIPTION (optional)" Style="{StaticResource SectionHeaderStyle}" Margin="0,0,0,2"/>
+            <TextBox Text="{Binding FullDescription, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputStyle}"
+                     Height="60" AcceptsReturn="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"/>
+        </StackPanel>
+
+        <!-- Action buttons -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,8">
+            <Button Content="Export as ZIP..."
+                    Command="{Binding ExportZipCommand}"
+                    Padding="14,8" Margin="0,0,8,0"
+                    Style="{StaticResource ActionButtonStyle}"
+                    ToolTip="Save a distributable ZIP file — others can import it via the mod list URL"/>
+            <Button Content="Install as Local Mod"
+                    Command="{Binding InstallCommand}"
+                    Padding="14,8"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    ToolTip="Copy files into Orion's cache and add to the Mods tab immediately"/>
+        </StackPanel>
+
+        <!-- Status -->
+        <TextBlock Grid.Row="6" Text="{Binding StatusText}" Foreground="#888" FontSize="11"/>
+    </Grid>
+</Window>

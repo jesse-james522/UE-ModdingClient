@@ -1,0 +1,32 @@
+# Build output
+src/*/bin/
+src/*/obj/
+
+# Publish output
+Publish_Test/
+
+# Graphify
+graphify-out/
+
+# Downloaded mod cache
+mod_cache/
+
+# PAK / IoStore files
+*.pak
+*.ucas
+*.utoc
+
+# Vendor binaries (distribute separately)
+vendor/*.dll
+vendor/*.asi
+
+# User secrets / local overrides
+appsettings.Local.json
+*.user
+
+# Project zip archives
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db

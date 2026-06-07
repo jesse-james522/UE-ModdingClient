@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>OrionLauncher</AssemblyName>
+    <RootNamespace>OrionLauncher</RootNamespace>
+
+    <!-- Single-file self-contained publish -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="SharpCompress" Version="0.49.1" />
+  </ItemGroup>
+
+  <!-- Copy vendor shim files to output alongside the exe -->
+  <ItemGroup>
+    <Content Include="..\..\vendor\winhttp.dll" Condition="Exists('..\..\vendor\winhttp.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>vendor\winhttp.dll</Link>
+    </Content>
+    <Content Include="..\..\vendor\UniversalSigBypasser.asi" Condition="Exists('..\..\vendor\UniversalSigBypasser.asi')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>vendor\UniversalSigBypasser.asi</Link>
+    </Content>
+  </ItemGroup>
+
+</Project>

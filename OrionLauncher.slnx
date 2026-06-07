@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OrionLauncher/OrionLauncher.csproj" />
+  </Folder>
+</Solution>
