@@ -30,6 +30,24 @@
             <!-- Separator -->
             <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="0,0,0,16"/>
 
+            <!-- Developer -->
+            <TextBlock Text="DEVELOPER" Style="{StaticResource SectionHeaderStyle}"/>
+            <Border BorderBrush="#333" BorderThickness="1" CornerRadius="4" Padding="14" Margin="0,6,0,28">
+                <StackPanel>
+                    <TextBlock Foreground="#666" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,12"
+                               Text="Override the server IP fetched from GitHub. Leave blank to use the published IP.txt. Hit Save Settings above after changing."/>
+                    <TextBlock Text="Custom Server IP" Foreground="#888" FontSize="12" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding DevServerIp, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource InputStyle}"
+                             Width="260" HorizontalAlignment="Left"
+                             ToolTip="Direct IP:port — overrides the IP.txt fetched from GitHub"
+                             x:Name="DevIpBox"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Separator -->
+            <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="0,0,0,16"/>
+
             <!-- Danger Zone -->
             <TextBlock Text="DANGER ZONE" Style="{StaticResource SectionHeaderStyle}"/>
             <Border BorderBrush="#5A2020" BorderThickness="1" CornerRadius="4" Padding="14" Margin="0,6,0,0">

@@ -57,13 +57,18 @@
                         Style="{StaticResource ActionButtonStyle}"
                         ToolTip="Start The Isle"/>
 
-                <!-- Auto-launch checkbox -->
-                <CheckBox Grid.Column="4"
-                          Content="Launch after inject"
-                          IsChecked="{Binding AutoLaunch}"
-                          Foreground="#AAA" FontSize="12"
-                          VerticalAlignment="Center"
-                          ToolTip="Automatically launch the game immediately after injecting"/>
+                <!-- Checkboxes -->
+                <StackPanel Grid.Column="4" Orientation="Vertical" VerticalAlignment="Center">
+                    <CheckBox Content="Launch after inject"
+                              IsChecked="{Binding AutoLaunch}"
+                              Foreground="#AAA" FontSize="12"
+                              ToolTip="Automatically launch the game immediately after injecting"/>
+                    <CheckBox Content="Auto Join server"
+                              IsChecked="{Binding AutoJoin}"
+                              Foreground="#AAA" FontSize="12"
+                              Margin="0,4,0,0"
+                              ToolTip="Join the configured server automatically when the game opens"/>
+                </StackPanel>
 
                 <!-- Status text -->
                 <TextBlock Grid.Column="5"

@@ -18,11 +18,12 @@ public partial class App : Application
         var eac       = new EacService();
         var gamePath  = new GamePathService();
         var clientMod = new ClientModService(settingsService, settings);
+        var autoJoin  = new AutoJoinService(settings);
         var launch    = new LaunchService(pak, eac);
 
         var modInfoVm  = new ModInfoViewModel(clientMod);
         var settingsVm = new SettingsViewModel(settingsService, settings, pak, eac, clientMod);
-        var mainVm     = new MainViewModel(launch, gamePath, eac, clientMod, settings, settingsService, modInfoVm, settingsVm);
+        var mainVm     = new MainViewModel(launch, gamePath, eac, clientMod, autoJoin, settings, settingsService, modInfoVm, settingsVm);
 
         var window = new MainWindow(mainVm);
         window.Show();

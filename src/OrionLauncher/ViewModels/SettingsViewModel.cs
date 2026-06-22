@@ -18,8 +18,9 @@ public partial class SettingsViewModel : ObservableObject
 
     public string ActiveGameDir { get; set; } = "";
 
-    [ObservableProperty] private string _gameDirectory = "";
-    [ObservableProperty] private string _detectedPath  = "";
+    [ObservableProperty] private string  _gameDirectory = "";
+    [ObservableProperty] private string  _detectedPath  = "";
+    [ObservableProperty] private string? _devServerIp;
 
     public SettingsViewModel(
         SettingsService  settingsService,
@@ -35,6 +36,7 @@ public partial class SettingsViewModel : ObservableObject
         _clientMod       = clientMod;
 
         GameDirectory = _settings.GameDirectoryOverride ?? "";
+        DevServerIp   = _settings.DevServerIp;
     }
 
     [RelayCommand]
@@ -53,6 +55,7 @@ public partial class SettingsViewModel : ObservableObject
     private void Save()
     {
         _settings.GameDirectoryOverride = string.IsNullOrWhiteSpace(GameDirectory) ? null : GameDirectory;
+        _settings.DevServerIp           = string.IsNullOrWhiteSpace(DevServerIp)   ? null : DevServerIp.Trim();
         _settingsService.Save(_settings);
         MessageBox.Show("Settings saved.", "Orion", MessageBoxButton.OK, MessageBoxImage.Information);
     }

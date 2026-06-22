@@ -11,6 +11,7 @@ public partial class MainViewModel : ObservableObject
     private readonly GamePathService  _gamePath;
     private readonly EacService       _eac;
     private readonly ClientModService _clientMod;
+    private readonly AutoJoinService  _autoJoinSvc;
     private readonly AppSettings      _settings;
     private readonly SettingsService  _settingsService;
 
@@ -22,12 +23,14 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty] private bool   _gameDirValid;
     [ObservableProperty] private bool   _isInjected;
     [ObservableProperty] private bool   _autoLaunch;
+    [ObservableProperty] private bool   _autoJoin;
 
     public MainViewModel(
         LaunchService    launch,
         GamePathService  gamePath,
         EacService       eac,
         ClientModService clientMod,
+        AutoJoinService  autoJoin,
         AppSettings      settings,
         SettingsService  settingsService,
         ModInfoViewModel modInfoVm,
@@ -37,12 +40,14 @@ public partial class MainViewModel : ObservableObject
         _gamePath        = gamePath;
         _eac             = eac;
         _clientMod       = clientMod;
+        _autoJoinSvc     = autoJoin;
         _settings        = settings;
         _settingsService = settingsService;
         ModInfoVm        = modInfoVm;
         SettingsVm       = settingsVm;
 
         _autoLaunch = settings.AutoLaunch;
+        AutoJoin    = settings.AutoJoin;
 
         _launch.StatusMessage += msg => StatusText = msg;
     }
@@ -120,6 +125,17 @@ public partial class MainViewModel : ObservableObject
         _clientMod.DeployToGame(GameDir);
         ModInfoVm.SetStatus(upToDate: true, updateAvailable: false, tag: _clientMod.ShortTag);
 
+        // Write auto-join config to Engine.ini
+        try
+        {
+            StatusText = "Writing server config...";
+            await _autoJoinSvc.WriteConfigAsync(AutoJoin);
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Warning: could not write Engine.ini — {ex.Message}";
+        }
+
         // EAC + shims
         try
         {
@@ -146,10 +162,14 @@ public partial class MainViewModel : ObservableObject
     // ── Launch ────────────────────────────────────────────────────────────────
 
     [RelayCommand(CanExecute = nameof(CanLaunch))]
-    private void LaunchGame()
+    private async Task LaunchGame()
     {
         if (!GameDirValid) return;
-        try   { _launch.Launch(GameDir); }
+        try
+        {
+            await _autoJoinSvc.WriteConfigAsync(AutoJoin);
+            _launch.Launch(GameDir);
+        }
         catch (Exception ex) { StatusText = $"Launch failed: {ex.Message}"; }
     }
 
@@ -184,6 +204,12 @@ public partial class MainViewModel : ObservableObject
     partial void OnAutoLaunchChanged(bool value)
     {
         _settings.AutoLaunch = value;
+        _settingsService.Save(_settings);
+    }
+
+    partial void OnAutoJoinChanged(bool value)
+    {
+        _settings.AutoJoin = value;
         _settingsService.Save(_settings);
     }
 
