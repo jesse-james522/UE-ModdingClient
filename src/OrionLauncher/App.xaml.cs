@@ -20,12 +20,17 @@ public partial class App : Application
         var clientMod = new ClientModService(settingsService, settings);
         var autoJoin  = new AutoJoinService(settings);
         var launch    = new LaunchService(pak, eac);
+        var eos       = new EosService();
 
-        var modInfoVm  = new ModInfoViewModel(clientMod);
+        var serverVm   = new ServerStatusViewModel(eos, autoJoin);
+        var modInfoVm  = new ModInfoViewModel(clientMod, serverVm);
         var settingsVm = new SettingsViewModel(settingsService, settings, pak, eac, clientMod);
         var mainVm     = new MainViewModel(launch, gamePath, eac, clientMod, autoJoin, settings, settingsService, modInfoVm, settingsVm);
 
         var window = new MainWindow(mainVm);
         window.Show();
+
+        // Initialize EOS in the background — UI is already visible
+        _ = serverVm.InitializeAsync();
     }
 }

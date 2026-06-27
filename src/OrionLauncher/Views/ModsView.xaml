@@ -6,6 +6,70 @@
         <Border Padding="28,24">
             <StackPanel MaxWidth="560" HorizontalAlignment="Left" VerticalAlignment="Top">
 
+                <!-- ── Server dock ──────────────────────────────────────────── -->
+                <Border Background="#0E1520" BorderBrush="#1E3050" BorderThickness="1"
+                        CornerRadius="6" Padding="18,14" Margin="0,0,0,28">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Online indicator dot -->
+                        <Ellipse Grid.Row="0" Grid.Column="0"
+                                 Width="10" Height="10"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,10,0">
+                            <Ellipse.Style>
+                                <Style TargetType="Ellipse">
+                                    <Setter Property="Fill" Value="#444"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ServerVm.IsOnline}" Value="True">
+                                            <Setter Property="Fill" Value="#4FC84F"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+
+                        <!-- Server name -->
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding ServerVm.ServerName}"
+                                   FontSize="15" FontWeight="SemiBold" Foreground="#DDD"
+                                   VerticalAlignment="Center"/>
+
+                        <!-- Player count -->
+                        <TextBlock Grid.Row="0" Grid.Column="2"
+                                   Text="{Binding ServerVm.PlayerCount}"
+                                   FontSize="14" Foreground="#88AACC"
+                                   VerticalAlignment="Center"
+                                   Margin="16,0,16,0"/>
+
+                        <!-- Refresh button -->
+                        <Button Grid.Row="0" Grid.Column="3"
+                                Content="↻"
+                                Command="{Binding ServerVm.RefreshCommand}"
+                                IsEnabled="{Binding ServerVm.IsLoading, Converter={StaticResource InverseBool}}"
+                                Style="{StaticResource ActionButtonStyle}"
+                                Padding="8,4" FontSize="14"
+                                ToolTip="Refresh server status"/>
+
+                        <!-- Status line -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                                   Text="{Binding ServerVm.StatusLine}"
+                                   Foreground="#556" FontSize="11"
+                                   Margin="0,6,0,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- ── Mod info ──────────────────────────────────────────────── -->
+
                 <!-- Mod title -->
                 <TextBlock Text="{Binding ModName}"
                            FontSize="22" FontWeight="Bold" Foreground="#EEE"

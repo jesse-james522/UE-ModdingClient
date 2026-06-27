@@ -1,3 +1,6 @@
+# EOS SDK
+src/EOSSDK/
+
 # Build output
 src/*/bin/
 src/*/obj/

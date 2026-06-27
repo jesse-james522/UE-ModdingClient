@@ -35,16 +35,13 @@ public class LaunchService
         StatusMessage?.Invoke("Injected — ready to launch.");
     }
 
-    /// <summary>Starts TheIsle.exe and returns immediately — fire-and-forget.</summary>
+    /// <summary>Starts The Isle through Steam — fire-and-forget.</summary>
     public void Launch(string gameDir)
     {
-        var exePath = Path.Combine(gameDir, "TheIsle.exe");
-        var psi = new ProcessStartInfo(exePath)
+        Process.Start(new ProcessStartInfo("steam://rungameid/376210")
         {
-            WorkingDirectory = gameDir,
-            UseShellExecute  = true
-        };
-        Process.Start(psi);
+            UseShellExecute = true
+        });
         StatusMessage?.Invoke("Game launched.");
     }
 

@@ -18,9 +18,12 @@ public partial class ModInfoViewModel : ObservableObject
     [ObservableProperty] private bool   _isDownloading;
     [ObservableProperty] private int    _downloadProgressPct;
 
-    public ModInfoViewModel(ClientModService clientMod)
+    public ServerStatusViewModel ServerVm { get; }
+
+    public ModInfoViewModel(ClientModService clientMod, ServerStatusViewModel serverVm)
     {
         _clientMod = clientMod;
+        ServerVm   = serverVm;
     }
 
     public void SetStatus(bool upToDate, bool updateAvailable, string? tag)
