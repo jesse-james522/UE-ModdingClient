@@ -21,16 +21,18 @@ public partial class App : Application
         var autoJoin  = new AutoJoinService(settings);
         var launch    = new LaunchService(pak, eac);
         var reach     = new ReachabilityService();
+        var launcherUpdate = new LauncherUpdateService();
 
         var serverVm   = new ServerStatusViewModel(reach, autoJoin);
         var modInfoVm  = new ModInfoViewModel(clientMod, serverVm);
-        var settingsVm = new SettingsViewModel(settingsService, settings, pak, eac, clientMod);
+        var settingsVm = new SettingsViewModel(settingsService, settings, pak, eac, clientMod, launcherUpdate);
         var mainVm     = new MainViewModel(launch, gamePath, eac, clientMod, autoJoin, settings, settingsService, modInfoVm, settingsVm);
 
         var window = new MainWindow(mainVm);
         window.Show();
 
-        // Start the server reachability check in the background — UI is already visible
+        // Background checks — UI is already visible
         _ = serverVm.InitializeAsync();
+        _ = settingsVm.RefreshLauncherVersionAsync();
     }
 }

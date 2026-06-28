@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,11 +11,12 @@ namespace OrionLauncher.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {
-    private readonly SettingsService  _settingsService;
-    private readonly AppSettings      _settings;
-    private readonly PakService       _pak;
-    private readonly EacService       _eac;
-    private readonly ClientModService _clientMod;
+    private readonly SettingsService       _settingsService;
+    private readonly AppSettings           _settings;
+    private readonly PakService            _pak;
+    private readonly EacService            _eac;
+    private readonly ClientModService      _clientMod;
+    private readonly LauncherUpdateService _launcherUpdate;
 
     public string ActiveGameDir { get; set; } = "";
 
@@ -22,21 +24,50 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty] private string  _detectedPath  = "";
     [ObservableProperty] private string? _devServerIp;
 
+    [ObservableProperty] private string _launcherUpdateStatus   = "Checking for launcher updates...";
+    [ObservableProperty] private bool   _launcherUpdateAvailable;
+
     public SettingsViewModel(
-        SettingsService  settingsService,
-        AppSettings      settings,
-        PakService       pak,
-        EacService       eac,
-        ClientModService clientMod)
+        SettingsService       settingsService,
+        AppSettings           settings,
+        PakService            pak,
+        EacService            eac,
+        ClientModService      clientMod,
+        LauncherUpdateService launcherUpdate)
     {
         _settingsService = settingsService;
         _settings        = settings;
         _pak             = pak;
         _eac             = eac;
         _clientMod       = clientMod;
+        _launcherUpdate  = launcherUpdate;
 
         GameDirectory = _settings.GameDirectoryOverride ?? "";
         DevServerIp   = _settings.DevServerIp;
+    }
+
+    /// <summary>Checks GitHub for a newer launcher release. Safe to fire-and-forget.</summary>
+    public async Task RefreshLauncherVersionAsync()
+    {
+        var result = await _launcherUpdate.CheckAsync();
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            LauncherUpdateStatus    = result.Message;
+            LauncherUpdateAvailable = result.UpdateAvailable;
+        });
+    }
+
+    [RelayCommand]
+    private void OpenLatestRelease()
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(LauncherUpdateService.DownloadPageUrl)
+            {
+                UseShellExecute = true
+            });
+        }
+        catch { /* opening a browser is best-effort */ }
     }
 
     [RelayCommand]

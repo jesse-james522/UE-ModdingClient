@@ -5,6 +5,23 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="16" MaxWidth="620">
 
+            <!-- Launcher version / self-update -->
+            <TextBlock Text="LAUNCHER" Style="{StaticResource SectionHeaderStyle}"/>
+            <Border BorderBrush="#333" BorderThickness="1" CornerRadius="4" Padding="14" Margin="0,6,0,28">
+                <StackPanel>
+                    <TextBlock Text="{Binding LauncherUpdateStatus}" FontSize="12" Foreground="#AAA"/>
+                    <Button Content="Get the latest build"
+                            Command="{Binding OpenLatestReleaseCommand}"
+                            Visibility="{Binding LauncherUpdateAvailable, Converter={StaticResource BoolToVisibility}}"
+                            HorizontalAlignment="Left" Margin="0,10,0,0" Padding="12,6"
+                            Style="{StaticResource ActionButtonStyle}"
+                            ToolTip="Open the latest launcher release on GitHub"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Separator -->
+            <Border BorderBrush="#333" BorderThickness="0,1,0,0" Margin="0,0,0,16"/>
+
             <!-- Game Directory -->
             <TextBlock Text="GAME DIRECTORY" Style="{StaticResource SectionHeaderStyle}"/>
             <Grid Margin="0,4,0,4">

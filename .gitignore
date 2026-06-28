@@ -9,6 +9,7 @@ src/*/obj/
 Publish_Test/
 Publish_Release/
 Publish_Out/
+Orion Launcher/
 
 # Graphify
 graphify-out/
@@ -33,6 +34,13 @@ appsettings.Local.json
 *.zip
 *.rar
 
+#build batches
+publish-release.bat
+publish-test.bat
+
 # OS
 .DS_Store
 Thumbs.db
+
+#update signatures
+launcher.sha256
