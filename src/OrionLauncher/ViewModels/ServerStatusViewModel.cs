@@ -8,41 +8,29 @@ namespace OrionLauncher.ViewModels;
 
 public partial class ServerStatusViewModel : ObservableObject
 {
-    private readonly EosService      _eos;
-    private readonly AutoJoinService _autoJoin;
-    private System.Timers.Timer?     _timer;
-    private readonly Dispatcher      _dispatcher = Application.Current.Dispatcher;
+    private readonly ReachabilityService _reach;
+    private readonly AutoJoinService     _autoJoin;
+    private System.Timers.Timer?         _timer;
+    private readonly Dispatcher          _dispatcher = Application.Current.Dispatcher;
+    private int                          _busy;
 
-    [ObservableProperty] private string _serverName     = "—";
-    [ObservableProperty] private string _playerCount    = "—";
-    [ObservableProperty] private string _statusLine     = "Connecting to EOS...";
+    [ObservableProperty] private string _serverName = "—";
+    [ObservableProperty] private string _statusLine = "Checking server...";
     [ObservableProperty] private bool   _isOnline;
-    [ObservableProperty] private bool   _isLoading       = true;
+    [ObservableProperty] private bool   _isLoading = true;
 
-    public ServerStatusViewModel(EosService eos, AutoJoinService autoJoin)
+    public ServerStatusViewModel(ReachabilityService reach, AutoJoinService autoJoin)
     {
-        _eos      = eos;
+        _reach    = reach;
         _autoJoin = autoJoin;
     }
 
     public async Task InitializeAsync()
     {
-        try
-        {
-            await _eos.InitializeAsync();
-            await _eos.ConnectAsync();
-
-            _timer          = new System.Timers.Timer(30_000);
-            _timer.Elapsed += async (_, _) => await RefreshAsync();
-            _timer.AutoReset = true;
-            _timer.Start();
-
-            await RefreshAsync();
-        }
-        catch (Exception ex)
-        {
-            SetStatus(false, "—", "—", $"EOS unavailable: {ex.Message}", false);
-        }
+        _timer          = new System.Timers.Timer(30_000) { AutoReset = true };
+        _timer.Elapsed += async (_, _) => await RefreshAsync();
+        _timer.Start();
+        await RefreshAsync();
     }
 
     [RelayCommand]
@@ -50,48 +38,50 @@ public partial class ServerStatusViewModel : ObservableObject
 
     private async Task RefreshAsync()
     {
+        if (Interlocked.Exchange(ref _busy, 1) == 1) return;
         _dispatcher.Invoke(() => IsLoading = true);
         try
         {
-            var ip      = await _autoJoin.FetchServerIpAsync();
-            var servers = await _eos.SearchSessionsAsync();
-
-            var targetHost = ip?.Split(':')[0];
-
-            var match = targetHost != null
-                ? servers.FirstOrDefault(s =>
-                      s.HostAddress.Contains(targetHost, StringComparison.OrdinalIgnoreCase) ||
-                      s.Attributes.Values.Any(v => v.Contains(targetHost, StringComparison.OrdinalIgnoreCase)))
-                : null;
-
-            match ??= servers.FirstOrDefault();
-
-            if (match != null)
+            var ip = await _autoJoin.FetchServerIpAsync();
+            if (string.IsNullOrWhiteSpace(ip))
             {
-                var name    = string.IsNullOrEmpty(match.Name) ? "Thenyaw Server" : match.Name;
-                var players = $"{match.PlayerCount} / {match.MaxPlayers}";
-                SetStatus(true, name, players, $"Online  •  {match.PlayerCount} / {match.MaxPlayers} players", false);
+                Set(false, "—", "No server IP configured");
+                return;
             }
-            else
+
+            var result = await _reach.CheckAsync(ip);
+            var host   = ip.Split(':')[0];
+            switch (result)
             {
-                SetStatus(false, "—", "—", "Server offline or not found in EOS", false);
+                case Reachability.PortOpen:
+                    Set(true, host, "Online");
+                    break;
+                case Reachability.HostUp:
+                    Set(true, host, "Online — host responding");
+                    break;
+                default:
+                    Set(false, host, "Offline / unreachable");
+                    break;
             }
         }
         catch (Exception ex)
         {
-            SetStatus(false, "—", "—", $"Query failed: {ex.Message}", false);
+            Set(false, "—", $"Check failed: {ex.Message}");
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _busy, 0);
         }
     }
 
-    private void SetStatus(bool online, string name, string players, string line, bool loading)
+    private void Set(bool online, string name, string line)
     {
         _dispatcher.Invoke(() =>
         {
-            IsOnline    = online;
-            ServerName  = name;
-            PlayerCount = players;
-            StatusLine  = line;
-            IsLoading   = loading;
+            IsOnline   = online;
+            ServerName = name;
+            StatusLine = line;
+            IsLoading  = false;
         });
     }
 }

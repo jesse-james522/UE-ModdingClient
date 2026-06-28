@@ -9,7 +9,6 @@
     <AssemblyName>OrionLauncher</AssemblyName>
     <RootNamespace>OrionLauncher</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>$(DefineConstants);EOS_PLATFORM_WINDOWS_64</DefineConstants>
 
     <!-- Single-file self-contained publish -->
     <PublishSingleFile>true</PublishSingleFile>
@@ -20,22 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-  </ItemGroup>
-
-  <!-- EOS SDK source files (from gitignored src/EOSSDK/) -->
-  <ItemGroup>
-    <Compile Include="..\EOSSDK\SDK\Source\**\*.cs" />
-  </ItemGroup>
-
-  <!-- EOS native DLL — must sit next to the exe at runtime -->
-  <ItemGroup>
-    <Content Include="..\EOSSDK\SDK\Bin\EOSSDK-Win64-Shipping.dll"
-             Condition="Exists('..\EOSSDK\SDK\Bin\EOSSDK-Win64-Shipping.dll')">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>EOSSDK-Win64-Shipping.dll</Link>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
   <!-- Copy vendor shim files to output alongside the exe -->

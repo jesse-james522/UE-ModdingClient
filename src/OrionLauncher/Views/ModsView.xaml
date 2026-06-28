@@ -38,18 +38,11 @@
                             </Ellipse.Style>
                         </Ellipse>
 
-                        <!-- Server name -->
+                        <!-- Server address -->
                         <TextBlock Grid.Row="0" Grid.Column="1"
                                    Text="{Binding ServerVm.ServerName}"
                                    FontSize="15" FontWeight="SemiBold" Foreground="#DDD"
                                    VerticalAlignment="Center"/>
-
-                        <!-- Player count -->
-                        <TextBlock Grid.Row="0" Grid.Column="2"
-                                   Text="{Binding ServerVm.PlayerCount}"
-                                   FontSize="14" Foreground="#88AACC"
-                                   VerticalAlignment="Center"
-                                   Margin="16,0,16,0"/>
 
                         <!-- Refresh button -->
                         <Button Grid.Row="0" Grid.Column="3"
